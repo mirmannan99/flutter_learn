@@ -11,55 +11,103 @@ class _WidgetTestState extends State<WidgetTest> {
   int listNumber = 1;
 
   bool isVisible = false;
+  bool isText2Visible = false;
+  bool isText3Visible = false;
+  bool isButtonVisible = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: isVisible
-            ? alertDialog()
-            : Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Column(children: [
-                    ListView(
-                      shrinkWrap: true,
-                      children: [
-                        ListTile(
-                          onTap: () {
-                            setState(() {
-                              isVisible = true;
-                            });
-                          },
-                          title: Text('list tile ${listNumber++}'),
-                          hoverColor: Colors.red,
-                          tileColor: Colors.lightBlueAccent,
-                        ),
-                        ListTile(
-                          onTap: () {
-                            setState(() {
-                              isVisible = true;
-                            });
-                          },
-                          title: Text('list tile ${listNumber++}'),
-                          hoverColor: Colors.red,
-                          tileColor: Colors.lightBlueAccent,
-                        ),
-                        ListTile(
-                          onTap: () {
-                            setState(() {
-                              isVisible = true;
-                            });
-                          },
-                          title: Text('list tile ${listNumber++}'),
-                          hoverColor: Colors.red,
-                          tileColor: Colors.lightBlueAccent,
-                        ),
-                      ],
-                    ),
-                  ]),
+        child: Padding(
+          padding: const EdgeInsets.all(50.0),
+          child: Column(
+            children: [
+              TextField(
+                onChanged: (value) {
+                  if (value.length > 3) {
+                    setState(() {
+                      isText2Visible = true;
+                    });
+                  }
+
+                  if (value.length < 3) {
+                    setState(() {
+                      isText2Visible = false;
+                    });
+                  }
+                },
+                decoration: InputDecoration(
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.black),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.black),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
                 ),
               ),
+              SizedBox(
+                height: 20,
+              ),
+              Visibility(
+                visible: isText2Visible,
+                child: TextField(
+                  onChanged: (value) {
+                    if (value.length > 3) {
+                      setState(() {
+                        isText3Visible = true;
+                      });
+                    }
+                  },
+                  decoration: InputDecoration(
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Visibility(
+                visible: isText3Visible && isText2Visible,
+                child: TextField(
+                  onChanged: (value) {
+                    if (value.length > 3) {
+                      setState(() {
+                        isButtonVisible = true;
+                      });
+                    }
+                  },
+                  decoration: InputDecoration(
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Visibility(
+                  visible: isButtonVisible && isText3Visible && isText2Visible,
+                  child:
+                      ElevatedButton(onPressed: () {}, child: Text("Submit"))),
+            ],
+          ),
+        ),
       ),
     );
   }
