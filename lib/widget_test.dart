@@ -8,12 +8,28 @@ class WidgetTest extends StatefulWidget {
 }
 
 class _WidgetTestState extends State<WidgetTest> {
-  int listNumber = 1;
+  late bool _isLoading;
 
-  bool isVisible = false;
-  bool isText2Visible = false;
-  bool isText3Visible = false;
-  bool isButtonVisible = false;
+  void getdata() async {
+    _isLoading = true;
+
+    await Future.delayed(
+        Duration(seconds: 2),
+        () => {
+              //debug
+              //jit just in time
+              //c#
+              //aot ahead of time
+              debugPrint("hii how are you"),
+            });
+    _isLoading = false;
+  }
+
+  @override
+  void initState() {
+    getdata();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,120 +39,25 @@ class _WidgetTestState extends State<WidgetTest> {
           padding: const EdgeInsets.all(50.0),
           child: Column(
             children: [
-              TextField(
-                onChanged: (value) {
-                  if (value.length > 3) {
+              _isLoading
+                  ? CircularProgressIndicator()
+                  : Card(
+                      child: Text(
+                        "hello worlds",
+                        style: Theme.of(context).textTheme.headline1,
+                      ),
+                    ),
+              ElevatedButton(
+                  onPressed: () {
                     setState(() {
-                      isText2Visible = true;
+                      _isLoading = false;
                     });
-                  }
-
-                  if (value.length < 3) {
-                    setState(() {
-                      isText2Visible = false;
-                    });
-                  }
-                },
-                decoration: InputDecoration(
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Visibility(
-                visible: isText2Visible,
-                child: TextField(
-                  onChanged: (value) {
-                    if (value.length > 3) {
-                      setState(() {
-                        isText3Visible = true;
-                      });
-                    }
                   },
-                  decoration: InputDecoration(
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Visibility(
-                visible: isText3Visible && isText2Visible,
-                child: TextField(
-                  onChanged: (value) {
-                    if (value.length > 3) {
-                      setState(() {
-                        isButtonVisible = true;
-                      });
-                    }
-                  },
-                  decoration: InputDecoration(
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Visibility(
-                  visible: isButtonVisible && isText3Visible && isText2Visible,
-                  child:
-                      ElevatedButton(onPressed: () {}, child: Text("Submit"))),
+                  child: Text("Loading finsihed"))
             ],
           ),
         ),
       ),
-    );
-  }
-
-  Widget alertDialog() {
-    return AlertDialog(
-      title: Text(
-        "list tile",
-      ),
-      content: Text(
-          "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged."),
-      actions: [
-        TextButton(
-            onPressed: () {
-              print("i am accepted");
-              setState(() {
-                isVisible = false;
-              });
-            },
-            child: Text("Yes")),
-        TextButton(
-            onPressed: () {
-              print("i am rejected");
-              setState(() {
-                isVisible = false;
-              });
-            },
-            child: Text("No")),
-      ],
     );
   }
 }
