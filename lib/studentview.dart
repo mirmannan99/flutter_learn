@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:mohsin/services/note_service.dart';
 import 'package:mohsin/student_model.dart';
 
 class Student extends StatefulWidget {
@@ -11,6 +12,8 @@ class Student extends StatefulWidget {
 }
 
 class _StudentState extends State<Student> {
+  ApiServices _apiServices = ApiServices();
+
   String json = '{"name":"mohsin","grade":"8th","rollNo":"1"}';
 
   StudentModel studentObj =
@@ -26,11 +29,13 @@ class _StudentState extends State<Student> {
           children: [
             ElevatedButton(
               onPressed: () {
-                print(studentObj);
-                Map<String, dynamic> studentMap = studentObj.toMap();
-                print(studentMap.runtimeType);
-                var jsonEncoded = jsonEncode(studentMap);
-                print(jsonEncoded.runtimeType);
+                // print(studentObj);
+                // Map<String, dynamic> studentMap = studentObj.toMap();
+                // print(studentMap.runtimeType);
+                // var jsonEncoded = jsonEncode(studentMap);
+                // print(jsonEncoded.runtimeType);
+                final notes = _apiServices.getNotes();
+                print(notes);
               },
               child: Text(
                 "Serialize",
