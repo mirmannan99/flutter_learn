@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:mohsin/controller/api_controller.dart';
 import 'package:mohsin/services/note_service.dart';
+import 'package:mohsin/views/add_note.dart';
 import 'package:mohsin/views/single_note.dart';
 
 import '../model/note_list.dart';
 import '../model/single_note.dart';
 
-class NoteList extends StatefulWidget {
-  const NoteList({Key? key}) : super(key: key);
+class NoteListView extends StatefulWidget {
+  const NoteListView({Key? key}) : super(key: key);
 
   @override
-  State<NoteList> createState() => _NoteListState();
+  State<NoteListView> createState() => _NoteListViewState();
 }
 
-class _NoteListState extends State<NoteList> {
+class _NoteListViewState extends State<NoteListView> {
   final ApiServices _apiServices = ApiServices();
   late ApiResponse<List<Note>> response;
   bool _isLoading = false;
@@ -53,13 +54,28 @@ class _NoteListState extends State<NoteList> {
                               ),
                             );
                           },
-                          title: Text(e.noteTitle!),
+                          title: Text(e.noteTitle ?? "no Title"),
                           subtitle: Text(
-                              "${e.latestEditDateTime ?? e.createDateTime}"),
+                              "${e.latestEditDateTime ?? e.createDateTime ?? "no data"} "),
                         ))
                     .toList(),
               ),
             ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => AddNoteView(),
+            ),
+          );
+        },
+        child: Icon(
+          Icons.add,
+        ),
+      ),
     );
   }
 }
+
+//start from begining to handle errors and check

@@ -1,9 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:logger/logger.dart';
 import 'package:mohsin/controller/api_controller.dart';
+import 'package:mohsin/model/add_note.dart';
 
 import '../model/note_list.dart';
 import '../model/single_note.dart';
@@ -59,4 +61,39 @@ class ApiServices {
           error: true, errorMessage: "Exception Catched");
     }
   }
+
+  //! post: adding the note
+
+  Future<ApiResponse<bool>> addNote(AddNoteModel addNote) async {
+    try {
+      Uri uri = Uri.parse(baseUrl + "/notes");
+
+      Map<String, dynamic> note = addNote.toJson();
+      // logger.e(note);
+      final json = jsonEncode(note);
+      // logger.wtf(json);
+
+      final response = await http.post(uri, headers: header, body: json);
+      final respStat = response.statusCode;
+      switch (respStat) {
+        case 201:
+          return ApiResponse<bool>(data: true);
+
+        default:
+          return ApiResponse<bool>(
+              error: true, errorMessage: "Not Created", data: false);
+      }
+    } catch (e) {
+      return ApiResponse<bool>(
+          error: true, errorMessage: "Whole Error", data: false);
+    }
+  }
 }
+
+
+
+
+
+// note title
+//note content
+//server
