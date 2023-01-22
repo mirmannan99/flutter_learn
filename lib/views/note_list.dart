@@ -40,25 +40,27 @@ class _NoteListViewState extends State<NoteListView> {
     return Scaffold(
       body: _isLoading
           ? Center(child: CircularProgressIndicator())
-          : SafeArea(
-              child: Column(
-                children: response.data!
-                    .map((e) => ListTile(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => SingleNoteView(
-                                  noteId: e.noteID,
+          : SingleChildScrollView(
+              child: SafeArea(
+                child: Column(
+                  children: response.data!
+                      .map((e) => ListTile(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => SingleNoteView(
+                                    noteId: e.noteID,
+                                  ),
                                 ),
-                              ),
-                            );
-                          },
-                          title: Text(e.noteTitle ?? "no Title"),
-                          subtitle: Text(
-                              "${e.latestEditDateTime ?? e.createDateTime ?? "no data"} "),
-                        ))
-                    .toList(),
+                              );
+                            },
+                            title: Text(e.noteTitle ?? "no Title"),
+                            subtitle: Text(
+                                "${e.latestEditDateTime ?? e.createDateTime ?? "no data"} "),
+                          ))
+                      .toList(),
+                ),
               ),
             ),
       floatingActionButton: FloatingActionButton(
