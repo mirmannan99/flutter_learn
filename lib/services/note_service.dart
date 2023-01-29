@@ -88,12 +88,47 @@ class ApiServices {
           error: true, errorMessage: "Whole Error", data: false);
     }
   }
+
+//! updating the notes
+
+  Future<ApiResponse<bool>> updateNote(
+      {required AddNoteModel updateNote, required String noteId}) async {
+    logger.e(noteId);
+    logger.w(updateNote.noteTitle, updateNote.noteContent);
+    try {
+      Uri uri = Uri.parse(baseUrl + "/notes/${noteId}");
+
+      Map<String, dynamic> note = updateNote.toJson();
+
+      final json = jsonEncode(note);
+
+      final response = await http.put(uri, headers: header, body: json);
+      final respStat = response.statusCode;
+      switch (respStat) {
+        case 204:
+          return ApiResponse<bool>(data: true);
+
+        default:
+          return ApiResponse<bool>(
+              error: true, errorMessage: "Not updated", data: false);
+      }
+    } catch (e) {
+      return ApiResponse<bool>(
+          error: true, errorMessage: "Whole Error", data: false);
+    }
+  }
 }
 
 
+// id pass *
+// read data old and new *
+// data -> service
 
 
-
-// note title
-//note content
-//server
+//build calcultor 25 to 100 
+// name
+// age
+// on click
+// 2 days 
+// take refrence internet use good colors
+// mannan is 25 and will be 100 in 75 years 

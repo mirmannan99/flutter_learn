@@ -3,7 +3,9 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:logger/logger.dart';
 import 'package:mohsin/controller/api_controller.dart';
+import 'package:mohsin/model/add_note.dart';
 import 'package:mohsin/services/note_service.dart';
+import 'package:mohsin/views/note_list.dart';
 
 import '../model/single_note.dart';
 
@@ -92,7 +94,29 @@ class _SingleNoteViewState extends State<SingleNoteView> {
                   SizedBox(
                     height: 25,
                   ),
-                  ElevatedButton(onPressed: () {}, child: Text("Submit")),
+                  ElevatedButton(
+                      onPressed: () async {
+                        setState(() {
+                          _isLoading = true;
+                        });
+                        AddNoteModel updatedNote = AddNoteModel(
+                            noteTitle: _titleController.text,
+                            noteContent: _contentController.text);
+
+                        ApiResponse<bool> response =
+                            await _apiServices.updateNote(
+                                updateNote: updatedNote,
+                                noteId: widget.noteId.toString());
+                        logger.wtf(!(response.error!)
+                            ? "updated succesfuly"
+                            : "Not Updated");
+                        setState(() {
+                          _isLoading = false;
+                        });
+                        Navigator.pushReplacement(context,
+                            MaterialPageRoute(builder: (_) => NoteListView()));
+                      },
+                      child: Text("Submit")),
                 ],
               ),
             ),
